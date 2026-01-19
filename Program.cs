@@ -12,7 +12,7 @@ class Program
     {
         PriorityQueue<(int node, int usedZeroEdges), int> pq = new(); // MinHeap, lower value takes prio
         // storing tuples in the pq containing the node & the number of zero-weight edges used at that given point.
-
+        // priority is set as the total weight used up to this point
         int n = adj.Count;
         int[,] dist = new int[n, k + 1];
         int[,] prevNode = new int[n, k + 1];
@@ -41,8 +41,6 @@ class Program
 
             if (d > dist[u, usedZero]) continue;
 
-            // Dijkstra property (on this expanded state-space):
-            // the first time we *dequeue* a state for `target`, it is globally optimal.
             if (u == target)
             {
                 bestTargetDist = d;
@@ -56,6 +54,7 @@ class Program
                 int nextUsedZero = usedZero + (weight == 0 ? 1 : 0);
                 if (nextUsedZero > k) continue;
 
+                // relaksacja sciezek potencjalnych, nd to kandydat w tym kontekscie
                 int nd = d + weight;
                 if (nd < dist[v, nextUsedZero])
                 {
